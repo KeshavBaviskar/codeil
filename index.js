@@ -1,17 +1,24 @@
-const express=require('express');
-const app=express();
-const port=8000;
+const express = require('express');
+const app = express();
+const port = 8000;
+const expressLayouts = require('express-ejs-layouts');
+
+app.use(express.static('./assets'));
+
+app.use(expressLayouts);
+
+app.use('layout extractStyles', true);
+app.use('layout extractScripts', true);
+
+app.use('/', require('./routes/index'));
+app.set('view engine', 'ejs');
+app.set('views', './views');
 
 
-app.use('/',require('./routes/index'));
-app.set('view engine','ejs');
-app.set('views','./views');
 
-
-
-app.listen(port,(err)=>{
-     if(err){
-        console.log(`Error in running the server:${err}`);
-     }
-     console.log(`server is running on port:${port}`);
+app.listen(port, (err) => {
+   if (err) {
+      console.log(`Error in running the server:${err}`);
+   }
+   console.log(`server is running on port:${port}`);
 })
