@@ -38,6 +38,23 @@ module.exports.create = async function (req, res) {
     }
 }
 
-module.exports.createSession = function (req, res) {
+module.exports.createSession = async function (req, res) {
 
+    try {
+        const user = await User.findOne({ email: req.body.email })
+        if (user) {
+            if (user.password != req.body.password) {
+                return res.redirect('back');
+            }
+            res.cookie('user_id', user.id);
+            return res.redirect('/users/profile');
+        }
+        else {
+            return res.redirect('back');
+        }
+    }
+    catch (err) {
+        console.log(`error in signing in user: ${err}`);
+        return res.redirect('back');
+    }
 }
