@@ -1,9 +1,25 @@
 const User = require('../models/user');
 
-module.exports.profile = function (req, res) {
-    return res.render('user_profile', {
-        title: "Home"
-    })
+module.exports.profile = async function (req, res) {
+    if (!req.cookies.user_id) {
+        return res.redirect('/users/sign-in');
+    }
+
+    try {
+        const user = await User.findById(req.cookies.user_id);
+
+        if (user) {
+            return res.render('user_profile', {
+                title: "User Profile",
+                user: user
+            });
+        }
+
+        return res.redirect('/users/sign-in');
+    } catch (err) {
+        console.log(`error in fetching user profile: ${err}`);
+        return res.redirect('/users/sign-in');
+    }
 }
 
 module.exports.signUp = function (req, res) {
