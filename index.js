@@ -25,6 +25,7 @@ app.set('views', './views');
 app.listen(port, (err) => {
    if (err) {
       console.log(`Error in running the server:${err}`);
+      return;
    }
    console.log(`server is running on port:${port}`);
 })

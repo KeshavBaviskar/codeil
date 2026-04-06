@@ -74,3 +74,11 @@ module.exports.createSession = async function (req, res) {
         return res.redirect('back');
     }
 }
+
+module.exports.destroySession = async function (req, res) {
+    if (!req.cookies.user_id) {
+        return res.redirect('/users/sign-in');
+    }
+    res.clearCookie('user_id');
+    return res.redirect('/users/sign-in');
+}
